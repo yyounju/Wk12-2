@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Little Story Friends - English Picture Book for Age 5</title>
+  <style>
+    :root {
+      --bg-sky: #e0f7fa;
+      --bg-cream: #fffdf7;
+      --primary: #ff7043;
+      --primary-dark: #e64a19;
+      --secondary: #29b6f6;
+      --secondary-dark: #0288d1;
+      --accent: #ffca28;
+      --green: #66bb6a;
+      --green-dark: #388e3c;
+      --purple: #ab47bc;
+      --text-main: #2d3436;
+      --text-muted: #636e72;
+      --card-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Nunito', 'Apple SD Gothic Neo', sans-serif;
+      background: linear-gradient(180deg, #b3e5fc 0%, #fff9c4 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    /* App Container */
+    .app-shell {
+      width: 100%;
+      max-width: 900px;
+      min-height: 94vh;
+      margin: 12px;
+      background: var(--bg-cream);
+      border-radius: 32px;
+      box-shadow: var(--card-shadow);
+      border: 6px solid #ffffff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Header Bar */
+    header {
+      background: #ffffff;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px dashed #ffe082;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    .brand span.logo {
+      font-size: 1.8rem;
+      animation: bounce 2.5s infinite;
+    }
+
+    .controls-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.12s ease, background 0.2s;
+      font-family: inherit;
+    }
+
+    .pill-btn:active {
+      transform: scale(0.94);
+    }
+
+    .btn-home {
+      background: #f1f2f6;
+      color: var(--text-main);
+    }
+
+    .btn-speed {
+      background: #e1f5fe;
+      color: var(--secondary-dark);
+    }
+
+    .btn-korean {
+      background: #fff3e0;
+      color: #ef6c00;
+    }
+
+    .btn-korean.active {
+      background: #ff9800;
+      color: white;
+    }
+
+    /* Screens */
+    .screen {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      padding: 20px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    /* Library / Home Screen */
+    .library-title {
+      text-align: center;
+      margin: 8px 0 4px;
+      font-size: 1.8rem;
+      color: var(--text-main);
+    }
+
+    .library-subtitle {
+      text-align: center;
+      margin: 0 0 22px;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+    }
+
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      flex: 1;
+      align-content: center;
+    }
+
+    .book-card {
+      background: white;
+      border-radius: 26px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      border: 4px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .book-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+    }
+
+    .book-cover-art {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4.5rem;
+      margin-bottom: 14px;
+      box-shadow: inset 0 -6px 0 rgba(0,0,0,0.08);
+    }
+
+    .book-card h3 {
+      margin: 6px 0;
+      font-size: 1.35rem;
+      color: var(--text-main);
+    }
+
+    .book-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      background: #e8f5e9;
+      color: #2e7d32;
+      margin-bottom: 12px;
+    }
+
+    .star-badge {
+      font-size: 1.2rem;
+      color: #fbc02d;
+      min-height: 26px;
+    }
+
+    /* Reader Screen */
+    .progress-bar-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #dfe6e9;
+      transition: all 0.25s ease;
+    }
+
+    .dot.active {
+      background: var(--primary);
+      transform: scale(1.25);
+    }
+
+    .dot.done {
+      background: var(--green);
+    }
+
+    /* Interactive Illustration Stage */
+    .stage {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.06);
+      border: 4px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .stage-hint {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .interactive-prop {
+      position: absolute;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .interactive-prop:active {
+      transform: scale(1.25) rotate(-5deg) !important;
+    }
+
+    .prop-emoji {
+      font-size: 4.4rem;
+      filter: drop-shadow(0 6px 8px rgba(0,0,0,0.15));
+      line-height: 1;
+    }
+
+    .prop-label {
+      margin-top: 4px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--secondary-dark);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      opacity: 0.95;
+    }
+
+    .prop-pop {
+      animation: popWiggle 0.55s ease;
+    }
+
+    /* Story Text Box */
+    .story-box {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 18px 22px;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      border: 3px solid #ffe082;
+      margin-bottom: 16px;
+      min-height: 130px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sentence-words {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .word-span {
+      padding: 4px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: background-color 0.12s ease, transform 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+      display: inline-block;
+    }
+
+    .word-span:hover {
+      background: #fff8e1;
+    }
+
+    .word-span.speaking {
+      background: var(--accent);
+      color: #1e272e;
+      transform: scale(1.16) translateY(-2px);
+      box-shadow: 0 5px 12px rgba(255, 193, 7, 0.45);
+    }
+
+    .word-span.target-word {
+      color: var(--primary-dark);
+      text-decoration: underline wavy var(--accent) 3px;
+    }
+
+    .korean-hint {
+      margin-top: 10px;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      display: none;
+    }
+
+    .korean-hint.visible {
+      display: block;
+    }
+
+    /* Bottom Navigation & Big Audio Controls */
+    .reader-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    .big-btn {
+      border: none;
+      border-radius: 22px;
+      padding: 14px 22px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+      box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+
+    .big-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 rgba(0,0,0,0.15);
+    }
+
+    .big-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-listen {
+      background: var(--accent);
+      color: #3e2723;
+      flex: 1.6;
+      font-size: 1.35rem;
+    }
+
+    .btn-nav {
+      background: var(--secondary);
+      color: white;
+      min-width: 120px;
+    }
+
+    .btn-next {
+      background: var(--green);
+      color: white;
+      min-width: 130px;
+    }
+
+    /* Mini Quiz / Game Screen (Part 1: Listen & Find) */
+    .game-step-pill {
+      background: #fff3e0;
+      color: #e65100;
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    .quiz-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .quiz-prompt-btn {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: 28px;
+      padding: 14px 26px;
+      font-size: 1.35rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 6px 0 var(--secondary-dark);
+      margin: 10px 0 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: inherit;
+    }
+
+    .quiz-prompt-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 var(--secondary-dark);
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      width: 100%;
+      max-width: 650px;
+    }
+
+    .quiz-card {
+      background: white;
+      border: 5px solid #e0e0e0;
+      border-radius: 24px;
+      padding: 20px 10px;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.2s, background 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quiz-card:hover {
+      transform: scale(1.04);
+      border-color: var(--secondary);
+    }
+
+    .quiz-card.correct {
+      border-color: var(--green);
+      background: #e8f5e9;
+      animation: popWiggle 0.5s ease;
+    }
+
+    .quiz-card.wrong {
+      border-color: #ef5350;
+      background: #ffebee;
+      animation: shake 0.4s ease;
+    }
+
+    .quiz-emoji {
+      font-size: 4.2rem;
+    }
+
+    .quiz-word {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    /* ==========================================
+       Part 2: Writing Activity Screen (Age-5 Friendly)
+       1) Letter Tile Word Builder + 2) Finger Trace Pad
+       ========================================== */
+    .writing-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+      gap: 10px;
+    }
+
+    .writing-header-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: #ffffff;
+      padding: 10px 24px;
+      border-radius: 24px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+      border: 3px solid #b3e5fc;
+      cursor: pointer;
+    }
+
+    .writing-emoji {
+      font-size: 3.6rem;
+      line-height: 1;
+    }
+
+    .writing-slots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 6px 0;
+      flex-wrap: wrap;
+    }
+
+    .letter-slot {
+      width: 58px;
+      height: 66px;
+      border-radius: 18px;
+      border: 4px dashed #90caf9;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .letter-slot .ghost-hint {
+      color: #cfd8dc;
+      pointer-events: none;
+    }
+
+    .letter-slot.filled {
+      border: 4px solid var(--green);
+      background: #e8f5e9;
+      color: #2e7d32;
+      animation: popWiggle 0.35s ease;
+    }
+
+    .letter-slot.active-slot {
+      border-color: var(--primary);
+      background: #fff8e1;
+      transform: scale(1.06);
+    }
+
+    .letter-bank {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 6px 0;
+    }
+
+    .letter-tile {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      border: none;
+      background: var(--accent);
+      color: #3e2723;
+      font-size: 2.1rem;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #ffa000;
+      transition: transform 0.12s, opacity 0.2s;
+    }
+
+    .letter-tile:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #ffa000;
+    }
+
+    .letter-tile.used {
+      opacity: 0.25;
+      pointer-events: none;
+      transform: scale(0.9);
+    }
+
+    .letter-tile.wrong-tile {
+      background: #ffcdd2;
+      box-shadow: 0 6px 0 #e57373;
+      animation: shake 0.35s ease;
+    }
+
+    /* Finger / Mouse Tracing Pad */
+    .trace-section {
+      width: 100%;
+      max-width: 560px;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 12px 16px;
+      border: 4px solid #ce93d8;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .trace-toolbar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+
+    .trace-label {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #6a1b9a;
+    }
+
+    .color-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .crayon-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 3px solid white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    .crayon-btn.active {
+      transform: scale(1.25);
+      border-color: #333;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 135px;
+      border-radius: 18px;
+      background: #fafafa;
+      border: 2px dashed #b0bec5;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    #traceCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: crosshair;
+    }
+
+    .writing-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    /* Celebration Modal / Screen */
+    .reward-box {
+      text-align: center;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .trophy {
+      font-size: 6rem;
+      animation: bounce 1.2s infinite;
+    }
+
+    /* Floating Feedback Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #323232;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes popWiggle {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.25) rotate(6deg); }
+      70% { transform: scale(1.12) rotate(-5deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .sentence-words { font-size: 1.55rem; gap: 6px; }
+      .stage { height: 220px; }
+      .prop-emoji { font-size: 3.5rem; }
+      .quiz-options { grid-template-columns: 1fr; max-width: 300px; }
+      .reader-controls { flex-wrap: wrap; }
+      .btn-listen { order: -1; width: 100%; flex: auto; }
+      .letter-slot { width: 46px; height: 54px; font-size: 1.8rem; }
+      .letter-tile { width: 52px; height: 52px; font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <!-- Top Bar -->
+    <header>
+      <div class="brand" onclick="goHome()">
+        <span class="logo">🐻</span>
+        <span>Little Story Friends</span>
+      </div>
+      <div class="controls-top">
+        <button class="pill-btn btn-speed" id="speedBtn" onclick="toggleSpeed()">🐢 Slow</button>
+        <button class="pill-btn btn-korean" id="koreanBtn" onclick="toggleKorean()">🇰🇷 뜻 보기</button>
+        <button class="pill-btn btn-home" onclick="goHome()">📚 Books</button>
+      </div>
+    </header>
+
+    <!-- 1. Book Selection Screen -->
+    <section id="libraryScreen" class="screen active">
+      <h1 class="library-title">Pick a Story Book! 📖</h1>
+      <p class="library-subtitle">Tap a book to listen, touch the pictures, play, and write!</p>
+      <div class="book-grid" id="bookGrid"></div>
+    </section>
+
+    <!-- 2. Picture Book Reader Screen -->
+    <section id="readerScreen" class="screen">
+      <div class="progress-bar-wrap" id="progressDots"></div>
+
+      <!-- Interactive Illustration Stage -->
+      <div class="stage" id="storyStage">
+        <div class="stage-hint">👆 Touch the pictures!</div>
+      </div>
+
+      <!-- Sentence Box with True Synchronized Word Highlight -->
+      <div class="story-box">
+        <div class="sentence-words" id="sentenceWords"></div>
+        <div class="korean-hint" id="koreanHint"></div>
+      </div>
+
+      <!-- Child-Friendly Controls -->
+      <div class="reader-controls">
+        <button class="big-btn btn-nav" id="prevBtn" onclick="prevPage()">⬅️ Back</button>
+        <button class="big-btn btn-listen" id="listenBtn" onclick="readCurrentPage()">🔊 Read to Me</button>
+        <button class="big-btn btn-next" id="nextBtn" onclick="nextPage()">Next ➡️</button>
+      </div>
+    </section>
+
+    <!-- 3A. Game Part 1: Listen & Find Screen -->
+    <section id="quizScreen" class="screen">
+      <div class="quiz-container">
+        <span class="game-step-pill">🎮 Game 1 of 2 • Listen & Find</span>
+        <h2 style="font-size: 1.65rem; margin: 0;">Find the Story Picture!</h2>
+        <p style="color: var(--text-muted); margin: 4px 0;">Listen carefully and tap the right picture!</p>
+        <button class="quiz-prompt-btn" onclick="speakQuizPrompt()">
+          <span>🔊</span>
+          <span id="quizPromptText">Find the ...</span>
+        </button>
+        <div class="quiz-options" id="quizOptions"></div>
+      </div>
+    </section>
+
+    <!-- 3B. Game Part 2: Writing Activity Screen -->
+    <section id="writingScreen" class="screen">
+      <div class="writing-container">
+        <div>
+          <span class="game-step-pill" style="background:#f3e5f5; color:#6a1b9a;">✏️ Game 2 of 2 • Word Builder & Tracing</span>
+          <h2 style="font-size: 1.55rem; margin: 2px 0;" id="writingTitle">Build & Write the Word!</h2>
+        </div>
+
+        <!-- Picture + Audio Cue -->
+        <div class="writing-header-card" onclick="speakWritingWord()" title="Tap to hear the word">
+          <div class="writing-emoji" id="writingEmoji">🍎</div>
+          <div style="text-align: left;">
+            <div style="font-size: 1.15rem; font-weight: 800; color: var(--secondary-dark);">🔊 Tap to Hear Word</div>
+            <div style="font-size: 0.95rem; color: var(--text-muted);" id="writingHintText">Tap the letters in order!</div>
+          </div>
+        </div>
+
+        <!-- Step 1: Tap Letter Tiles into Slots -->
+        <div class="writing-slots" id="writingSlots"></div>
+        <div class="letter-bank" id="letterBank"></div>
+
+        <!-- Step 2: Finger / Mouse Tracing Canvas -->
+        <div class="trace-section">
+          <div class="trace-toolbar">
+            <span class="trace-label">✍️ Trace the word with your finger!</span>
+            <div class="color-dots">
+              <button class="crayon-btn active" style="background:#ff7043;" onclick="setCrayonColor('#ff7043', this)"></button>
+              <button class="crayon-btn" style="background:#29b6f6;" onclick="setCrayonColor('#29b6f6', this)"></button>
+              <button class="crayon-btn" style="background:#66bb6a;" onclick="setCrayonColor('#66bb6a', this)"></button>
+              <button class="crayon-btn" style="background:#ab47bc;" onclick="setCrayonColor('#ab47bc', this)"></button>
+            </div>
+            <button class="pill-btn btn-home" style="padding: 5px 12px; font-size: 0.85rem;" onclick="clearTraceCanvas()">🧽 Clear</button>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="traceCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Next Word / Finish Button -->
+        <div class="writing-actions">
+          <button class="big-btn btn-listen" style="flex:0 1 auto; padding: 12px 22px; font-size: 1.1rem;" onclick="speakWritingWord()">🔊 Hear Word</button>
+          <button class="big-btn btn-next" id="writingNextBtn" onclick="nextWritingWord()">Done! Next ➡️</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Star Reward Screen -->
+    <section id="rewardScreen" class="screen">
+      <div class="reward-box">
+        <div class="trophy">🌟</div>
+        <h1 style="font-size: 2.2rem; color: var(--primary); margin: 10px 0;">Super Reader & Writer!</h1>
+        <p style="font-size: 1.25rem; color: var(--text-muted);" id="rewardMessage">You finished the book and writing game!</p>
+        <div style="margin-top: 28px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+          <button class="big-btn btn-listen" onclick="restartBook()">🔄 Read Again</button>
+          <button class="big-btn btn-next" onclick="goHome()">📚 More Books</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast">Great job!</div>
+
+  <script>
+    // ==========================================
+    // 1. EFL Age-5 Picture Book Curriculum Data
+    // ==========================================
+    const BOOKS = [
+      {
+        id: 'colors',
+        title: 'What Color Is It?',
+        tag: 'Colors & Nature',
+        coverEmoji: '🌈',
+        coverBg: '#fff3e0',
+        pages: [
+          {
+            bg: 'linear-gradient(180deg, #b3e5fc 0%, #c8e6c9 100%)',
+            sentence: ['I', 'see', 'a', 'red', 'apple.'],
+            targetIndex: 3,
+            korean: '빨간 사과가 보여요.',
+            props: [
+              { emoji: '🌳', word: 'tree', x: 18, y: 22, sound: 'A green tree!' },
+              { emoji: '🍎', word: 'red apple', x: 52, y: 36, sound: 'Yum! A red apple!' },
+              { emoji: '☀️', word: 'sun', x: 80, y: 14, sound: 'Bright sun!' }
+            ]
+          },
+          {
+            bg: 'linear-gradient(180deg, #fff9c4 0%, #ffe082 100%)',
+            sentence: ['I', 'see', 'a', 'yellow', 'duck.'],
+            targetIndex: 3,
+            korean: '노란 오리가 보여요.',
+            props: [
+              { emoji: '🦆', word: 'yellow duck', x: 45, y: 38, sound: 'Quack quack! Yellow duck!' },
+              { emoji: '💧', word: 'water', x: 20, y: 55, sound: 'Splash splash!' },
+              { emoji: '🌼', word: 'flower', x: 76, y: 46, sound: 'Pretty flower!' }
+            ]
+          },
+          {
+            bg: 'linear-gradient(180deg, #81d4fa 0%, #29b6f6 100%)',
+            sentence: ['I', 'see', 'a', 'blue', 'whale.'],
+            targetIndex: 3,
+            korean: '파란 고래가 보여요.',
+            props: [
+              { emoji: '🐋', word: 'blue whale', x: 42, y: 34, sound: 'Whoosh! A big blue whale!' },
+              { emoji: '🐟', word: 'little fish', x: 75, y: 52, sound: 'Swim, little fish!' },
+              { emoji: '☁️', word: 'cloud', x: 20, y: 12, sound: 'White cloud!' }
+            ]
+          },
+          {
+            bg: 'linear-gradient(180deg, #e8f5e9 0%, #a5d6a7 100%)',
+            sentence: ['I', 'see', 'a', 'green', 'frog.'],
+            targetIndex: 3,
+            korean: '초록 개구리가 보여요.',
+            props: [
+              { emoji: '🐸', word: 'green frog', x: 48, y: 38, sound: 'Ribbit, ribbit! Green frog!' },
+              { emoji: '🍃', word: 'leaf', x: 22, y: 50, sound: 'Green leaf!' },
+              { emoji: '🦋', word: 'butterfly', x: 76, y: 22, sound: 'Fly, butterfly!' }
+            ]
+          }
+        ],
+        quiz: [
+          {
+            prompt: 'Find the red apple!',
+            answer: 'red apple',
+            options: [
+              { emoji: '🍎', label: 'red apple' },
+              { emoji: '🦆', label: 'yellow duck' },
+              { emoji: '🐸', label: 'green frog' }
+            ]
+          },
+          {
+            prompt: 'Find the blue whale!',
+            answer: 'blue whale',
+            options: [
+              { emoji: '🐸', label: 'green frog' },
+              { emoji: '🐋', label: 'blue whale' },
+              { emoji: '🍎', label: 'red apple' }
+            ]
+          }
+        ],
+        writing: [
+          { word: 'RED', emoji: '🍎', hint: 'Color of the apple (R - E - D)' },
+          { word: 'DUCK', emoji: '🦆', hint: 'Yellow bird (D - U - C - K)' }
+        ]
+      },
+      {
+        id: 'animals',
+        title: 'Hello, Farm Friends!',
+        tag: 'Animals & Sounds',
+        coverEmoji: '🐮',
+        coverBg: '#e8f5e9',
+        pages: [
+          {
+            bg: 'linear-gradient(180deg, #bbdefb 0%, #dcedc8 100%)',
+            sentence: ['Hello,', 'cow!', 'Moo,', 'moo!'],
+            targetIndex: 1,
+            korean: '안녕, 소야! 음메, 음메!',
+            props: [
+              { emoji: '🐮', word: 'cow', x: 46, y: 35, sound: 'Moo! Moo! I am a cow!' },
+              { emoji: '🌾', word: 'hay', x: 18, y: 54, sound: 'Yummy hay!' },
+              { emoji: '🏡', word: 'barn', x: 78, y: 24, sound: 'Red barn!' }
+            ]
+          },
+          {
+            bg: 'linear-gradient(180deg, #ffe0b2 0%, #ffcc80 100%)',
+            sentence: ['Hello,', 'pig!', 'Oink,', 'oink!'],
+            targetIndex: 1,
+            korean: '안녕, 돼지야! 꿀꿀!',
+            props: [
+              { emoji: '🐷', word: 'pig', x: 48, y: 36, sound: 'Oink, oink! Hello, pig!' },
+              { emoji: '🟤', word: 'mud', x: 20, y: 55, sound: 'Squishy mud!' },
+              { emoji: '🌽', word: 'corn', x: 78, y: 45, sound: 'Sweet corn!' }
+            ]
+          },
+          {
+            bg: 'linear-gradient(180deg, #e1f5fe 0%, #b2dfdb 100%)',
+            sentence: ['Hello,', 'dog!', 'Woof,', 'woof!'],
+            targetIndex: 1,
+            korean: '안녕, 강아지야! 멍멍!',
+            props: [
+              { emoji: '🐶', word: 'dog', x: 46, y: 35, sound: 'Woof, woof! Happy dog!' },
+              { emoji: '🦴', word: 'bone', x: 76, y: 54, sound: 'A tasty bone!' },
+              { emoji: '⚽', word: 'ball', x: 20, y: 48, sound: 'Bounce the ball!' }
+            ]
+          },
+          {
+            bg: 'linear-gradient(180deg, #f3e5f5 0%, #e1bee7 100%)',
+            sentence: ['Hello,', 'cat!', 'Meow,', 'meow!'],
+            targetIndex: 1,
+            korean: '안녕, 고양이야! 야옹!',
+            props: [
+              { emoji: '🐱', word: 'cat', x: 48, y: 35, sound: 'Meow, meow! Soft cat!' },
+              { emoji: '🧶', word: 'yarn', x: 22, y: 54, sound: 'Pink yarn!' },
+              { emoji: '🥛', word: 'milk', x: 78, y: 50, sound: 'Yummy milk!' }
+            ]
+          }
+        ],
+        quiz: [
+          {
+            prompt: 'Who says Moo, moo? Find the cow!',
+            answer: 'cow',
+            options: [
+              { emoji: '🐷', label: 'pig' },
+              { emoji: '🐮', label: 'cow' },
+              { emoji: '🐱', label: 'cat' }
+            ]
+          },
+          {
+            prompt: 'Who says Woof, woof? Find the dog!',
+            answer: 'dog',
+            options: [
+              { emoji: '🐶', label: 'dog' },
+              { emoji: '🐮', label: 'cow' },
+              { emoji: '🐷', label: 'pig' }
+            ]
+          }
+        ],
+        writing: [
+          { word: 'COW', emoji: '🐮', hint: 'Says Moo, moo! (C - O - W)' },
+          { word: 'CAT', emoji: '🐱', hint: 'Says Meow, meow! (C - A - T)' }
+        ]
+      },
+      {
+        id: 'actions',
+        title: 'I Can Jump!',
+        tag: 'Action Verbs',
+        coverEmoji: '🐰',
+        coverBg: '#e1f5fe',
+        pages: [
+          {
+            bg: 'linear-gradient(180deg, #e0f2f1 0%, #b2ebf2 100%)',
+            sentence: ['I', 'can', 'jump', 'up', 'high!'],
+            targetIndex: 2,
+            korean: '나는 높이 점프할 수 있어요!',
+            props: [
+              { emoji: '🐰', word: 'jump', x: 46, y: 30, sound: 'Boing! Jump, bunny, jump!' },
+              { emoji: '🥕', word: 'carrot', x: 76, y: 52, sound: 'Crunchy carrot!' },
+              { emoji: '☁️', word: 'sky', x: 20, y: 14, sound: 'Up in the sky!' }
+            ]
+          },
+          {
+            bg: 'linear-gradient(180deg, #fffde7 0%, #fff59d 100%)',
+            sentence: ['I', 'can', 'run', 'so', 'fast!'],
+            targetIndex: 2,
+            korean: '나는 아주 빨리 달릴 수 있어요!',
+            props: [
+              { emoji: '🐆', word: 'run', x: 46, y: 36, sound: 'Zoom! Run, run, run!' },
+              { emoji: '👟', word: 'shoes', x: 20, y: 52, sound: 'Fast shoes!' },
+              { emoji: '🏁', word: 'finish', x: 78, y: 36, sound: 'Go, go, go!' }
+            ]
+          },
+          {
+            bg: 'linear-gradient(180deg, #b3e5fc 0%, #81d4fa 100%)',
+            sentence: ['I', 'can', 'swim', 'in', 'water!'],
+            targetIndex: 2,
+            korean: '나는 물에서 수영할 수 있어요!',
+            props: [
+              { emoji: '🐢', word: 'swim', x: 46, y: 38, sound: 'Splash! Swim, turtle, swim!' },
+              { emoji: '🐙', word: 'octopus', x: 76, y: 46, sound: 'Wiggle octopus!' },
+              { emoji: '🫧', word: 'bubbles', x: 22, y: 26, sound: 'Pop! Bubbles!' }
+            ]
+          },
+          {
+            bg: 'linear-gradient(180deg, #3f51b5 0%, #1a237e 100%)',
+            sentence: ['I', 'can', 'sleep', 'at', 'night.'],
+            targetIndex: 2,
+            korean: '나는 밤에 잘 수 있어요.',
+            props: [
+              { emoji: '🐻', word: 'sleep', x: 46, y: 38, sound: 'Shhh... Good night, bear!' },
+              { emoji: '🌙', word: 'moon', x: 78, y: 15, sound: 'Sleepy moon!' },
+              { emoji: '⭐', word: 'star', x: 22, y: 18, sound: 'Twinkle star!' }
+            ]
+          }
+        ],
+        quiz: [
+          {
+            prompt: 'Find who can jump!',
+            answer: 'jump',
+            options: [
+              { emoji: '🐰', label: 'jump' },
+              { emoji: '🐢', label: 'swim' },
+              { emoji: '🐻', label: 'sleep' }
+            ]
+          },
+          {
+            prompt: 'Find who can sleep!',
+            answer: 'sleep',
+            options: [
+              { emoji: '🐆', label: 'run' },
+              { emoji: '🐻', label: 'sleep' },
+              { emoji: '🐰', label: 'jump' }
+            ]
+          }
+        ],
+        writing: [
+          { word: 'RUN', emoji: '🐆', hint: 'Move very fast! (R - U - N)' },
+          { word: 'JUMP', emoji: '🐰', hint: 'Hop up high! (J - U - M - P)' }
+        ]
+      }
+    ];
+
+    // ==========================================
+    // 2. App State & Persistence
+    // ==========================================
+    let currentBook = null;
+    let currentPageIndex = 0;
+    let currentQuizIndex = 0;
+    let currentWritingIndex = 0;
+    let writingLetterPos = 0;
+    let isSlowMode = true; // Default slow for 5-year-old EFL learners
+    let showKorean = false;
+    let completedBooks = JSON.parse(localStorage.getItem('lsf_stars') || '{}');
+    let preferredVoice = null;
+    let activeReadSession = 0; // Cancels stale timers/callbacks cleanly
+
+    // ==========================================
+    // 3. Synchronized Speech Synthesis Engine
+    // ==========================================
+    function loadVoices() {
+      if (!('speechSynthesis' in window)) return;
+      const voices = window.speechSynthesis.getVoices();
+      preferredVoice =
+        voices.find(v => v.lang.startsWith('en') && (
+          v.name.includes('Samantha') ||
+          v.name.includes('Google US English') ||
+          v.name.includes('Aria') ||
+          v.name.includes('Jenny') ||
+          v.name.includes('Zira')
+        )) ||
+        voices.find(v => v.lang.startsWith('en-US')) ||
+        voices.find(v => v.lang.startsWith('en'));
+    }
+
+    if ('speechSynthesis' in window) {
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    function stopAllSpeech() {
+      activeReadSession++;
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      clearHighlights();
+    }
+
+    function speakText(text, options = {}) {
+      stopAllSpeech();
+      const session = activeReadSession;
+
+      if (!('speechSynthesis' in window)) {
+        showToast(text);
+        if (options.onEnd) setTimeout(options.onEnd, 700);
+        return;
+      }
+
+      const utter = new SpeechSynthesisUtterance(text);
+      if (preferredVoice) utter.voice = preferredVoice;
+      utter.lang = 'en-US';
+      utter.rate = options.rate || (isSlowMode ? 0.72 : 0.92);
+      utter.pitch = options.pitch || 1.12;
+
+      if (options.onBoundary) {
+        utter.onboundary = (e) => {
+          if (session === activeReadSession) options.onBoundary(e);
+        };
+      }
+      if (options.onEnd) {
+        utter.onend = () => {
+          if (session === activeReadSession) options.onEnd();
+        };
+      }
+      utter.onerror = () => {
+        if (session === activeReadSession && options.onEnd) options.onEnd();
+      };
+
+      window.speechSynthesis.speak(utter);
+    }
+
+    /**
+     * Truly Synchronized Sentence Narration:
+     * Uses exact character-index boundaries from SpeechSynthesis when available,
+     * AND pairs with a syllable-weighted duration model as a seamless fallback
+     * so every browser highlights each word in lockstep with the spoken audio.
+     */
+    function speakSynchronizedSentence(wordsArray, onFinish) {
+      stopAllSpeech();
+      const session = activeReadSession;
+      const fullSentence = wordsArray.join(' ');
+
+      // Build exact character offset ranges for each word in `fullSentence`
+      const wordRanges = [];
+      let cursor = 0;
+      wordsArray.forEach((w, idx) => {
+        const start = cursor;
+        const end = start + w.length;
+        wordRanges.push({ idx, start, end, word: w });
+        cursor = end + 1; // +1 for space
+      });
+
+      // Estimate syllable-weighted timings for fallback synchronization
+      const rate = isSlowMode ? 0.72 : 0.92;
+      const baseMsPerChar = isSlowMode ? 95 : 68;
+      const weights = wordsArray.map(w => {
+        const clean = w.replace(/[^a-zA-Z]/g, '');
+        const punctPause = /[.,!?]$/.test(w) ? 180 : 0;
+        return Math.max(260, clean.length * baseMsPerChar + 110 + punctPause);
+      });
+
+      let boundaryFired = false;
+      let fallbackTimers = [];
+
+      function clearFallbackTimers() {
+        fallbackTimers.forEach(t => clearTimeout(t));
+        fallbackTimers = [];
+      }
+
+      // Schedule syllable-weighted fallback highlights
+      let elapsed = 40;
+      weights.forEach((dur, idx) => {
+        const t = setTimeout(() => {
+          if (session !== activeReadSession || boundaryFired) return;
+          highlightWord(idx);
+        }, elapsed);
+        fallbackTimers.push(t);
+        elapsed += dur;
+      });
+
+      if (!('speechSynthesis' in window)) {
+        const endTimer = setTimeout(() => {
+          if (session === activeReadSession) {
+            clearHighlights();
+            if (onFinish) onFinish();
+          }
+        }, elapsed + 150);
+        fallbackTimers.push(endTimer);
+        return;
+      }
+
+      const utter = new SpeechSynthesisUtterance(fullSentence);
+      if (preferredVoice) utter.voice = preferredVoice;
+      utter.lang = 'en-US';
+      utter.rate = rate;
+      utter.pitch = 1.12;
+
+      utter.onstart = () => {
+        if (session !== activeReadSession) return;
+        highlightWord(0);
+      };
+
+      utter.onboundary = (event) => {
+        if (session !== activeReadSession) return;
+        if (event.name === 'word' || typeof event.charIndex === 'number') {
+          boundaryFired = true;
+          clearFallbackTimers();
+          const charPos = event.charIndex;
+          const match = wordRanges.find(r => charPos >= r.start && charPos <= r.end) ||
+                        wordRanges.reduce((prev, curr) =>
+                          Math.abs(curr.start - charPos) < Math.abs(prev.start - charPos) ? curr : prev
+                        );
+          if (match) {
+            highlightWord(match.idx);
+          }
+        }
+      };
+
+      utter.onend = () => {
+        if (session !== activeReadSession) return;
+        clearFallbackTimers();
+        setTimeout(() => {
+          if (session === activeReadSession) {
+            clearHighlights();
+            if (onFinish) onFinish();
+          }
+        }, 160);
+      };
+
+      utter.onerror = () => {
+        if (session !== activeReadSession) return;
+        clearFallbackTimers();
+        clearHighlights();
+        if (onFinish) onFinish();
+      };
+
+      window.speechSynthesis.speak(utter);
+    }
+
+    // Gentle Web Audio Sound Effects (Pop, Ding, Fanfare)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playTone(freq, type = 'sine', duration = 0.15) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.14, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function playSuccessChime() {
+      playTone(523.25, 'triangle', 0.14);
+      setTimeout(() => playTone(659.25, 'triangle', 0.14), 110);
+      setTimeout(() => playTone(783.99, 'triangle', 0.25), 220);
+    }
+
+    function playPopSound() {
+      playTone(440, 'sine', 0.09);
+    }
+
+    // ==========================================
+    // 4. Screen Navigation & Library Rendering
+    // ==========================================
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+    }
+
+    function renderLibrary() {
+      const grid = document.getElementById('bookGrid');
+      grid.innerHTML = '';
+
+      BOOKS.forEach(book => {
+        const stars = completedBooks[book.id] || 0;
+        const starDisplay = stars > 0 ? '⭐'.repeat(Math.min(stars, 3)) : '☆ Tap to Read';
+
+        const card = document.createElement('div');
+        card.className = 'book-card';
+        card.innerHTML = `
+          <div class="book-cover-art" style="background:${book.coverBg}">${book.coverEmoji}</div>
+          <span class="book-tag">${book.tag}</span>
+          <h3>${book.title}</h3>
+          <div class="star-badge">${starDisplay}</div>
+        `;
+        card.onclick = () => openBook(book.id);
+        grid.appendChild(card);
+      });
+    }
+
+    function goHome() {
+      stopAllSpeech();
+      renderLibrary();
+      showScreen('libraryScreen');
+    }
+
+    function toggleSpeed() {
+      isSlowMode = !isSlowMode;
+      const btn = document.getElementById('speedBtn');
+      btn.textContent = isSlowMode ? '🐢 Slow' : '🐇 Normal';
+      showToast(isSlowMode ? 'Slow & clear voice!' : 'Normal speed voice!');
+    }
+
+    function toggleKorean() {
+      showKorean = !showKorean;
+      const btn = document.getElementById('koreanBtn');
+      btn.classList.toggle('active', showKorean);
+      const hint = document.getElementById('koreanHint');
+      if (hint) hint.classList.toggle('visible', showKorean);
+    }
+
+    // ==========================================
+    // 5. Picture Book Reader Logic
+    // ==========================================
+    function openBook(bookId) {
+      currentBook = BOOKS.find(b => b.id === bookId);
+      currentPageIndex = 0;
+      showScreen('readerScreen');
+      renderPage();
+    }
+
+    function restartBook() {
+      currentPageIndex = 0;
+      showScreen('readerScreen');
+      renderPage();
+    }
+
+    function renderPage() {
+      stopAllSpeech();
+      const page = currentBook.pages[currentPageIndex];
+
+      // 1. Progress Dots
+      const dotsWrap = document.getElementById('progressDots');
+      dotsWrap.innerHTML = '';
+      currentBook.pages.forEach((_, idx) => {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (idx === currentPageIndex ? ' active' : idx < currentPageIndex ? ' done' : '');
+        dotsWrap.appendChild(dot);
+      });
+
+      // 2. Interactive Stage
+      const stage = document.getElementById('storyStage');
+      stage.style.background = page.bg;
+      stage.innerHTML = '<div class="stage-hint">👆 Touch the pictures!</div>';
+
+      page.props.forEach(prop => {
+        const el = document.createElement('div');
+        el.className = 'interactive-prop';
+        el.style.left = prop.x + '%';
+        el.style.top = prop.y + '%';
+        el.style.transform = 'translate(-50%, -20%)';
+        el.innerHTML = `
+          <div class="prop-emoji">${prop.emoji}</div>
+          <div class="prop-label">${prop.word}</div>
+        `;
+        el.onclick = () => {
+          playPopSound();
+          el.classList.remove('prop-pop');
+          void el.offsetWidth;
+          el.classList.add('prop-pop');
+          speakText(prop.sound);
+        };
+        stage.appendChild(el);
+      });
+
+      // 3. Sentence with Clickable Individual Words
+      const wordsWrap = document.getElementById('sentenceWords');
+      wordsWrap.innerHTML = '';
+      page.sentence.forEach((word, idx) => {
+        const span = document.createElement('span');
+        span.className = 'word-span' + (idx === page.targetIndex ? ' target-word' : '');
+        span.textContent = word;
+        span.dataset.idx = idx;
+        span.onclick = () => {
+          highlightWord(idx);
+          const cleanWord = word.replace(/[.,!?]/g, '');
+          speakText(cleanWord, {
+            onEnd: () => clearHighlights()
+          });
+        };
+        wordsWrap.appendChild(span);
+      });
+
+      // 4. Korean Support Subtitle
+      const koreanHint = document.getElementById('koreanHint');
+      koreanHint.textContent = page.korean;
+      koreanHint.classList.toggle('visible', showKorean);
+
+      // 5. Navigation Buttons
+      document.getElementById('prevBtn').disabled = currentPageIndex === 0;
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.textContent = currentPageIndex === currentBook.pages.length - 1 ? 'Play Games 🎮' : 'Next ➡️';
+
+      // Auto-read page gently after short delay
+      setTimeout(() => readCurrentPage(), 320);
+    }
+
+    function highlightWord(index) {
+      clearHighlights();
+      const spans = document.querySelectorAll('.word-span');
+      if (spans[index]) spans[index].classList.add('speaking');
+    }
+
+    function clearHighlights() {
+      document.querySelectorAll('.word-span').forEach(s => s.classList.remove('speaking'));
+    }
+
+    function readCurrentPage() {
+      const page = currentBook.pages[currentPageIndex];
+      speakSynchronizedSentence(page.sentence);
+    }
+
+    function prevPage() {
+      if (currentPageIndex > 0) {
+        currentPageIndex--;
+        renderPage();
+      }
+    }
+
+    function nextPage() {
+      if (currentPageIndex < currentBook.pages.length - 1) {
+        currentPageIndex++;
+        renderPage();
+      } else {
+        startQuiz();
+      }
+    }
+
+    // ==========================================
+    // 6. Game Part 1: Listen & Tap Comprehension
+    // ==========================================
+    function startQuiz() {
+      stopAllSpeech();
+      currentQuizIndex = 0;
+      showScreen('quizScreen');
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      const q = currentBook.quiz[currentQuizIndex];
+      document.getElementById('quizPromptText').textContent = q.prompt;
+
+      const optionsWrap = document.getElementById('quizOptions');
+      optionsWrap.innerHTML = '';
+
+      q.options.forEach(opt => {
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.innerHTML = `
+          <div class="quiz-emoji">${opt.emoji}</div>
+          <div class="quiz-word">${opt.label}</div>
+        `;
+        card.onclick = () => handleQuizAnswer(card, opt.label === q.answer, opt.label);
+        optionsWrap.appendChild(card);
+      });
+
+      setTimeout(() => speakQuizPrompt(), 300);
+    }
+
+    function speakQuizPrompt() {
+      const q = currentBook.quiz[currentQuizIndex];
+      speakText(q.prompt);
+    }
+
+    function handleQuizAnswer(cardEl, isCorrect, label) {
+      if (isCorrect) {
+        cardEl.classList.add('correct');
+        playSuccessChime();
+        speakText('Yay! ' + label + '! Great job!');
+        setTimeout(() => {
+          currentQuizIndex++;
+          if (currentQuizIndex < currentBook.quiz.length) {
+            renderQuizQuestion();
+          } else {
+            startWritingGame();
+          }
+        }, 1450);
+      } else {
+        cardEl.classList.add('wrong');
+        playTone(220, 'sawtooth', 0.2);
+        speakText('Oops, that is ' + label + '. Try again!');
+        setTimeout(() => cardEl.classList.remove('wrong'), 600);
+      }
+    }
+
+    // ==========================================
+    // 7. Game Part 2: Age-5 Writing Activity
+    //    (Letter Tile Word Builder + Finger Tracing)
+    // ==========================================
+    let traceColor = '#ff7043';
+    let isDrawing = false;
+
+    function startWritingGame() {
+      stopAllSpeech();
+      currentWritingIndex = 0;
+      showScreen('writingScreen');
+      renderWritingChallenge();
+    }
+
+    function renderWritingChallenge() {
+      const item = currentBook.writing[currentWritingIndex];
+      writingLetterPos = 0;
+
+      document.getElementById('writingTitle').textContent =
+        `Word ${currentWritingIndex + 1} of ${currentBook.writing.length}: Spell & Trace "${item.word}"`;
+      document.getElementById('writingEmoji').textContent = item.emoji;
+      document.getElementById('writingHintText').textContent = item.hint;
+
+      const nextBtn = document.getElementById('writingNextBtn');
+      nextBtn.textContent =
+        currentWritingIndex === currentBook.writing.length - 1 ? 'Finish Book 🌟' : 'Next Word ➡️';
+
+      // Render Target Letter Slots with faint guide letters for 5-year-olds
+      const slotsWrap = document.getElementById('writingSlots');
+      slotsWrap.innerHTML = '';
+      item.word.split('').forEach((char, idx) => {
+        const slot = document.createElement('div');
+        slot.className = 'letter-slot' + (idx === 0 ? ' active-slot' : '');
+        slot.id = `slot-${idx}`;
+        slot.innerHTML = `<span class="ghost-hint">${char}</span>`;
+        slotsWrap.appendChild(slot);
+      });
+
+      // Render Scrambled Letter Tiles
+      const bankWrap = document.getElementById('letterBank');
+      bankWrap.innerHTML = '';
+      const letters = item.word.split('').map((char, idx) => ({ char, id: idx }));
+      const shuffled = [...letters].sort(() => Math.random() - 0.5);
+      if (shuffled.map(l => l.char).join('') === item.word && shuffled.length > 1) {
+        shuffled.reverse();
+      }
+
+      shuffled.forEach(tileObj => {
+        const btn = document.createElement('button');
+        btn.className = 'letter-tile';
+        btn.textContent = tileObj.char;
+        btn.onclick = () => handleLetterTileClick(btn, tileObj.char, item.word);
+        bankWrap.appendChild(btn);
+      });
+
+      // Setup Finger Tracing Pad with Dotted Guide Word
+      setTimeout(() => {
+        setupTraceCanvas(item.word);
+        speakText(`Let's write ${item.word.toLowerCase()}! Tap the letters, then trace the word!`);
+      }, 250);
+    }
+
+    function handleLetterTileClick(btnEl, pickedChar, targetWord) {
+      if (writingLetterPos >= targetWord.length) return;
+      const expectedChar = targetWord[writingLetterPos];
+
+      if (pickedChar === expectedChar) {
+        playPopSound();
+        btnEl.classList.add('used');
+
+        const slot = document.getElementById(`slot-${writingLetterPos}`);
+        slot.classList.remove('active-slot');
+        slot.classList.add('filled');
+        slot.textContent = pickedChar;
+
+        // Speak the letter name gently
+        speakText(pickedChar.toLowerCase(), { rate: 0.85 });
+
+        writingLetterPos++;
+        if (writingLetterPos < targetWord.length) {
+          const nextSlot = document.getElementById(`slot-${writingLetterPos}`);
+          if (nextSlot) nextSlot.classList.add('active-slot');
+        } else {
+          // Completed spelling the word!
+          setTimeout(() => {
+            playSuccessChime();
+            showToast(`🎉 You spelled ${targetWord}! Now trace it below!`);
+            speakText(`Awesome! ${targetWord.toLowerCase()}! Now trace the letters with your finger!`);
+          }, 420);
+        }
+      } else {
+        btnEl.classList.add('wrong-tile');
+        playTone(220, 'sawtooth', 0.18);
+        speakText(`Try letter ${expectedChar.toLowerCase()}!`);
+        setTimeout(() => btnEl.classList.remove('wrong-tile'), 450);
+      }
+    }
+
+    function speakWritingWord() {
+      const item = currentBook.writing[currentWritingIndex];
+      const spelledOut = item.word.split('').join(', ');
+      speakText(`${item.word.toLowerCase()}. ${spelledOut}.`);
+    }
+
+    function nextWritingWord() {
+      if (currentWritingIndex < currentBook.writing.length - 1) {
+        currentWritingIndex++;
+        renderWritingChallenge();
+      } else {
+        finishBook();
+      }
+    }
+
+    // ==========================================
+    // 8. Finger / Mouse Tracing Canvas Engine
+    // ==========================================
+    function setCrayonColor(color, btnEl) {
+      traceColor = color;
+      document.querySelectorAll('.crayon-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+    }
+
+    function setupTraceCanvas(word) {
+      const canvas = document.getElementById('traceCanvas');
+      const wrap = canvas.parentElement;
+      const dpr = window.devicePixelRatio || 1;
+      const rect = wrap.getBoundingClientRect();
+
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      drawGuideWord(ctx, rect.width, rect.height, word);
+
+      if (!canvas.dataset.bound) {
+        canvas.dataset.bound = 'true';
+
+        const getPos = (e) => {
+          const r = canvas.getBoundingClientRect();
+          const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+          const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+          return { x: clientX - r.left, y: clientY - r.top };
+        };
+
+        const startDraw = (e) => {
+          e.preventDefault();
+          isDrawing = true;
+          const pos = getPos(e);
+          const c = canvas.getContext('2d');
+          c.beginPath();
+          c.moveTo(pos.x, pos.y);
+        };
+
+        const moveDraw = (e) => {
+          if (!isDrawing) return;
+          e.preventDefault();
+          const pos = getPos(e);
+          const c = canvas.getContext('2d');
+          c.lineWidth = 10;
+          c.lineCap = 'round';
+          c.lineJoin = 'round';
+          c.strokeStyle = traceColor;
+          c.lineTo(pos.x, pos.y);
+          c.stroke();
+        };
+
+        const endDraw = () => {
+          if (isDrawing) {
+            isDrawing = false;
+            playTone(580, 'sine', 0.06);
+          }
+        };
+
+        canvas.addEventListener('mousedown', startDraw);
+        canvas.addEventListener('mousemove', moveDraw);
+        window.addEventListener('mouseup', endDraw);
+
+        canvas.addEventListener('touchstart', startDraw, { passive: false });
+        canvas.addEventListener('touchmove', moveDraw, { passive: false });
+        canvas.addEventListener('touchend', endDraw);
+      }
+    }
+
+    function drawGuideWord(ctx, width, height, word) {
+      ctx.clearRect(0, 0, width, height);
+
+      // Primary school handwriting baseline & midline
+      const midY = height * 0.52;
+      const baseY = height * 0.80;
+
+      ctx.save();
+      ctx.strokeStyle = '#e0e0e0';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([8, 6]);
+      ctx.beginPath();
+      ctx.moveTo(24, midY);
+      ctx.lineTo(width - 24, midY);
+      ctx.stroke();
+
+      ctx.setLineDash([]);
+      ctx.strokeStyle = '#90caf9';
+      ctx.beginPath();
+      ctx.moveTo(24, baseY);
+      ctx.lineTo(width - 24, baseY);
+      ctx.stroke();
+      ctx.restore();
+
+      // Large dotted/outline target word to trace over
+      ctx.save();
+      ctx.font = "800 84px 'Comic Sans MS', 'Chalkboard SE', sans-serif";
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#eceff1';
+      ctx.fillText(word, width / 2, height * 0.54);
+
+      ctx.setLineDash([6, 6]);
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = '#90a4ae';
+      ctx.strokeText(word, width / 2, height * 0.54);
+      ctx.restore();
+    }
+
+    function clearTraceCanvas() {
+      const item = currentBook.writing[currentWritingIndex];
+      setupTraceCanvas(item.word);
+      playPopSound();
+    }
+
+    // ==========================================
+    // 9. Reward & Toast Helpers
+    // ==========================================
+    function finishBook() {
+      completedBooks[currentBook.id] = (completedBooks[currentBook.id] || 0) + 1;
+      localStorage.setItem('lsf_stars', JSON.stringify(completedBooks));
+      document.getElementById('rewardMessage').textContent = `You read, played, and wrote words for "${currentBook.title}"!`;
+      showScreen('rewardScreen');
+      playSuccessChime();
+      speakText('Hooray! You finished the story and the writing game! You are a superstar!');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+
+    // Initialize App
+    renderLibrary();
+  </script>
+</body>
+</html>
